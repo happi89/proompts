@@ -1,12 +1,12 @@
 import Feed from '@/components/Feed';
 import { Metadata } from 'next';
 
-export const metatdata: Metadata = {
+export const metadata: Metadata = {
   title: 'Proompts',
   description: 'share & save your AI Prompts'
 }
 
-export const Home = async () => {
+const Home = async () => {
   const prompts = await fetch('http://localhost:3000/api/prompt', {
     cache: 'no-store',
   }).then(res => res.json())
