@@ -1,7 +1,9 @@
 import Feed from '@/components/Feed';
+import { Metadata } from 'next';
 
-export const metatdata = {
-  title: 'Proompts'
+export const metatdata: Metadata = {
+  title: 'Proompts',
+  description: 'share & save your AI Prompts'
 }
 
 export const Home = async () => {
