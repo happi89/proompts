@@ -1,10 +1,9 @@
 import { NextApiRequest } from 'next';
 import { connectToDB } from "@/utils/db";
 import Prompt from "@/models/prompt";
-import { NextRequest, NextResponse } from "next/server";
-import User from '@/models/user';
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request) {
   const filter = req.url?.split('=')[1]
 
   try {
