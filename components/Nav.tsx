@@ -38,7 +38,7 @@ const NavBlock = block(
                 <Button onClick={signOut} variant="outline">Sign Out</Button>
                 <Link href='/profile'>
                   <Avatar>
-                    <AvatarImage src={session?.user?.image ? session?.user?.image : "https://github.com/shadcn.png"} alt="@shadcn" />
+                    <AvatarImage src={session?.user?.image ? session?.user?.image : `https://ui-avatars.com/api/?name=${ session?.user?.name }`} alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </Link>
