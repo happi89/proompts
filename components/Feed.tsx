@@ -28,6 +28,7 @@ const Feed = ({ p }: Props) => {
         cache: 'no-cache'
       }).then(res => res.json())
       setPrompts(newPrompts)
+      setSearch({ finding: false, filter: '' })
     }
 
     if (search.finding) {
@@ -39,8 +40,9 @@ const Feed = ({ p }: Props) => {
   return (
     <div className="flex flex-wrap justify-center w-full gap-8 px-2 my-16 sm:px-8">
       <SearchForm
-        setSearch={setSearch}
+        setSearch={setSearch} finding={search.finding}
       />
+      {prompts.length === 0 && <p>No results Found :(</p>}
       <For each={prompts}>
         {(prompt, i) => {
           // @ts-expect-error

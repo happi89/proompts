@@ -9,9 +9,10 @@ interface Props {
     finding: boolean;
     filter: string;
   }>>
+  finding: boolean
 }
 
-export default function SearchForm({ setSearch }: Props) {
+export default function SearchForm({ setSearch, finding }: Props) {
   const [input, setInput] = useState('')
 
   const search = async () => {
@@ -25,7 +26,9 @@ export default function SearchForm({ setSearch }: Props) {
       value={input}
       className='max-w-xl shadow-md'
       placeholder="search for tag or username"
+      onKeyDown={({ key }) => key === 'Enter' && search()}
+      disabled={finding}
     />
-    <Button onClick={search}>Search</Button>
+    <Button disabled={finding} className="shadow-xl" onClick={search}>Search</Button>
   </div>;
 }
