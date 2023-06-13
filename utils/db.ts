@@ -12,8 +12,6 @@ export const connectToDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI!, {
       dbName: 'Proompts',
-      /* @ts-expect-error */
-      useUnifiedTopology: true,
     })
 
     connected = true

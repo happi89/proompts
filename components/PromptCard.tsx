@@ -3,50 +3,59 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
-import { block } from "million/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import CopyButton from './Copy';
+import { Dispatch, SetStateAction } from "react";
+import PromptDialog from "./PromptDialog";
+import PromptCarderHeader from "./PromptCarderHeader";
 
-interface Props {
-  prompt: {
-    body: string;
-    tag: string
-    creator: {
-      email: string;
-      username: string;
-      image: string
-      id: string
-    }
+export interface Prompt {
+  id: string
+  body: string;
+  tag: string
+  creator: {
+    email: string;
+    username: string;
+    image: string
+    id: string
   }
 }
 
-function PromptCard({ prompt }: Props) {
-  const { username, image, email } = prompt.creator
-  console.log("🚀 ~ file: PromptCard.tsx:32 ~ PrompCard ~ image:", image)
+interface Props {
+  prompt: Prompt,
+  setSearch: Dispatch<SetStateAction<{
+    finding: boolean;
+    profile: boolean;
+    filter: string;
+    input: string
+  }>>,
+  search: {
+    finding: boolean;
+    filter: string;
+    profile: boolean;
+    input: string
+  }
+}
+
+function PromptCard({ prompt, search, setSearch }: Props) {
+  const searchTag = () => {
+    if (search && setSearch) {
+      const input = prompt.tag.replace(/#/g, "")
+      setSearch({ ...search, finding: true, filter: input, input })
+    }
+  }
 
   return (
-    <Card className="w-full md:w-[520px] h-fit">
+    <Card className="w-full md:w-[480px] h-full flex flex-col">
       <CardHeader className="flex flex-row items-center w-full gap-4">
-        <Avatar>
-          <AvatarImage src={image ? image : `https://ui-avatars.com/api/?name=${ username }`} alt={username} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <div className="w-full space-y-1">
-          <CardTitle>{username}</CardTitle>
-          <CardDescription>{email}</CardDescription>
-        </div>
-        <CopyButton text={prompt.body} />
+        <PromptCarderHeader prompt={prompt} />
       </CardHeader>
       <CardContent>
-        <p>{prompt?.body}</p>
+        <PromptDialog prompt={prompt} searchTag={searchTag} />
       </CardContent>
-      <CardFooter className="">
-        <p className='text-blue-500'>{prompt?.tag}</p>
+      <CardFooter className="mt-auto">
+        <p onClick={searchTag} className='text-blue-500 hover:cursor-pointer hover:underline'>{prompt?.tag}</p>
       </CardFooter>
     </Card>
   )

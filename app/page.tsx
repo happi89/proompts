@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 }
 
 const Home = async () => {
-  const prompts = await fetch('https://proompts-delta.vercel.app/api/prompt', {
+  const prompts = await fetch(`${ process.env.URL }/api/prompt`, {
     cache: 'no-store',
   }).then(res => res.json())
 

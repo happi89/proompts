@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
     const tagPrompts = await Prompt.find({ tag: { $regex: filter, $options: 'i' } }).populate('creator');
 
-    const userPrompts = await Prompt.find()
+    const userPrompts = await Prompt.find({})
       .populate({
         path: 'creator',
         match: { username: { $regex: filter, $options: 'i' } },

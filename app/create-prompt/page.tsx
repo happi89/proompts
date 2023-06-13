@@ -1,16 +1,21 @@
 import { PromptForm } from "@/components/PromptForm"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]/route"
-import type { Session as T } from "next-auth"
+import type { Session as T } from "next-auth/core/types"
 import { redirect, useRouter } from "next/navigation"
 
-interface Session extends T {
-  id: string
+export interface Session extends T {
+  user: {
+    id: string;
+    name?: string | null | undefined;
+    email?: string | null | undefined;
+    image?: string | null | undefined;
+  };
+
 }
 
 const createPrompt = async () => {
   const session: Session | null = await getServerSession(authOptions)
-  console.log("🚀 ~ file: page.tsx:13 ~ createPrompt ~ session:", session)
 
   if (!session?.user) {
     throw redirect('/api/auth/signin')
