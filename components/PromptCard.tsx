@@ -24,6 +24,9 @@ export interface Prompt {
 
 interface Props {
   prompt: Prompt,
+  userId: string;
+  deletePrompt: (id: string) => Promise<void>
+
   setSearch: Dispatch<SetStateAction<{
     finding: boolean;
     profile: boolean;
@@ -38,7 +41,7 @@ interface Props {
   }
 }
 
-function PromptCard({ prompt, search, setSearch }: Props) {
+function PromptCard({ prompt, search, setSearch, userId, deletePrompt }: Props) {
   const searchTag = () => {
     if (search && setSearch) {
       const input = prompt.tag.replace(/#/g, "")
@@ -51,10 +54,14 @@ function PromptCard({ prompt, search, setSearch }: Props) {
       <CardHeader className="flex flex-row items-center w-full gap-4">
         <PromptCarderHeader prompt={prompt} />
       </CardHeader>
-      <CardContent>
-        <PromptDialog prompt={prompt} searchTag={searchTag} />
+      <CardContent className='h-full'>
+        <PromptDialog
+          deletePrompt={deletePrompt}
+          show={userId === prompt.creator.id}
+          prompt={prompt}
+          searchTag={searchTag} />
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="">
         <p onClick={searchTag} className='text-blue-500 hover:cursor-pointer hover:underline'>{prompt?.tag}</p>
       </CardFooter>
     </Card>

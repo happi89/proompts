@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import type { Session as T } from "next-auth/core/types"
 import { redirect, useRouter } from "next/navigation"
+import { getCurrentUser } from "@/utils/session"
 
 export interface Session extends T {
   user: {
@@ -15,14 +16,14 @@ export interface Session extends T {
 }
 
 const createPrompt = async () => {
-  const session: Session | null = await getServerSession(authOptions)
+  const user = await getCurrentUser()
 
-  if (!session?.user) {
+  if (!user) {
     throw redirect('/api/auth/signin')
   }
 
   return (
-    <PromptForm session={session!} type='Create' />
+    <PromptForm user={user!} type='Create' />
   )
 }
 

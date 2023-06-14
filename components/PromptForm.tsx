@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "./ui/use-toast"
 import React, { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { Session } from "next-auth"
+import { Prompt } from "./PromptCard"
 
 const formSchema = z.object({
   body: z.string().min(6, {
@@ -36,8 +36,7 @@ const formSchema = z.object({
   })
 })
 
-export const PromptForm = ({ session, type }: { session: Session, type: string }) => {
-  console.log("🚀 ~ file: PromptForm.tsx:40 ~ PromptForm ~ session:", session)
+export const PromptForm = ({ user, type, prompt }: { user: any, type: string, prompt?: Prompt }) => {
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
@@ -45,19 +44,19 @@ export const PromptForm = ({ session, type }: { session: Session, type: string }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      body: "",
-      tag: "",
+      body: prompt ? prompt?.body : "",
+      tag: prompt ? prompt?.tag : "",
     },
   })
 
-  async function createPrompt(values: z.infer<typeof formSchema>,) {
+  async function createPrompt(values: z.infer<typeof formSchema>) {
     setSubmitting(true)
     try {
       const res = await fetch('/api/prompt/new', {
         method: 'POST',
         body: JSON.stringify({
           ...values,
-          user: session?.user
+          user
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -78,12 +77,44 @@ export const PromptForm = ({ session, type }: { session: Session, type: string }
     }
   }
 
+  async function updatePrompt(values: z.infer<typeof formSchema>) {
+    setSubmitting(true)
+    try {
+      const res = await fetch(`/api/prompt/${ prompt?.id }`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          ...values,
+          user
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      console.log("🚀 ~ file: PromptForm.tsx:64 ~ updatePrompt ~ res:", res)
+
+
+      toast({
+        title: "Prompt Updated Successfully!",
+      })
+
+      setSubmitting(false)
+      router.push('/')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    prompt ? updatePrompt(values) : createPrompt(values)
+  }
+
 
   return (
     <>
       <h1 className='w-full max-w-lg mt-12 text-3xl font-bold blue_gradient text-start'>{type} Prompt</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(createPrompt)} className="w-full max-w-lg mt-8 space-y-8">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="w-full max-w-lg mt-8 space-y-8">
           <FormField
             control={form.control}
             name="body"
@@ -91,7 +122,7 @@ export const PromptForm = ({ session, type }: { session: Session, type: string }
               <FormItem>
                 <FormLabel>Prompt</FormLabel>
                 <FormControl>
-                  <Textarea disabled={submitting} placeholder="Write your AWSOME Proompt here!" {...field} />
+                  <Textarea rows={10} disabled={submitting} placeholder="Write your AWSOME Proompt here!" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is your public display Prompt.
@@ -121,7 +152,6 @@ export const PromptForm = ({ session, type }: { session: Session, type: string }
               <Button
                 variant='destructive'
               >
-
                 Cancel
               </Button>
             </Link>

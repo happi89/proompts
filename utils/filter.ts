@@ -1,6 +1,6 @@
 export const getNewPrompts = async (filter: string) => {
   const newPrompts = await fetch(`/api/prompt/filter?filter=${ filter }`, {
-    cache: 'no-cache'
+    cache: 'no-store'
   }).then(res => res.json())
 
   return newPrompts
@@ -8,7 +8,7 @@ export const getNewPrompts = async (filter: string) => {
 
 export const getNewProfilePrompts = async (filter: string) => {
   const newPrompts = await fetch(`/api/users/filter?filter=${ filter }`, {
-    cache: 'no-cache'
+    cache: 'no-store'
   }).then(res => res.json())
 
   return newPrompts

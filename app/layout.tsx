@@ -1,5 +1,4 @@
-import NavBlock from '@/components/Nav'
-import Provider from '@/components/Provider'
+import Nav from '@/components/Nav'
 import '@/styles/globals.css'
 import React from 'react'
 
@@ -14,17 +13,16 @@ export const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='en'>
       <body>
-        <Provider>
-          <div className='main'>
-            <div className='gradient' />
-          </div>
+        <div className='main'>
+          <div className='gradient' />
+        </div>
 
-          <main className='app'>
-            <NavBlock />
-            {children}
-            <Toaster />
-          </main>
-        </Provider>
+        <main className='app'>
+          {/* @ts-expect-error */}
+          <Nav />
+          {children}
+          <Toaster />
+        </main>
       </body>
     </html>
   )
