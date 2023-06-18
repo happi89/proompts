@@ -3,16 +3,26 @@ import { Schema, model, models } from 'mongoose';
 const PromptSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   body: {
     type: String,
     required: [true, 'Prompt is Required'],
+    unique: true
   },
   tag: {
     type: String,
     required: [true, 'Tag is Required']
-  }
+  },
+  saved: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  ],
+}, {
+  timestamps: true // Add the timestamps option
 })
 
 PromptSchema.set('toJSON', {

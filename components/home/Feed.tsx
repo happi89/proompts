@@ -3,12 +3,14 @@
 import { For } from "million/react"
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
-import PromptCard from "./PromptCard"
-import SearchForm from './SearchForm';
+import PromptCard from "../prompt/PromptCard"
+const SearchForm = dynamic(() => import('./SearchForm'))
 
-import { getNewPrompts, getNewProfilePrompts } from "@/utils/filter";
-import { useToast } from "./ui/use-toast";
+
+import { getNewPrompts, getNewProfilePrompts, getNewUserPrompts } from "@/utils/filter";
+import { useToast } from "../ui/use-toast";
 
 interface Prompt {
   _id: string | null | undefined;
@@ -19,6 +21,7 @@ interface Prompt {
 interface Props {
   p: Prompt[],
   user: {
+    id: string | null | undefined
     name?: string | null | undefined;
     email?: string | null | undefined;
     image?: string | null | undefined;
@@ -26,15 +29,15 @@ interface Props {
 }
 
 const Feed = ({ p, user }: Props) => {
-  const router = useRouter()
   const [prompts, setPrompts] = useState<Prompt[]>(p)
   const pathName = usePathname()
   const [search, setSearch] = useState({
     finding: false,
     filter: '',
-    profile: pathName === '/profile',
+    profile: pathName === '/profile/prompts',
     input: ''
   })
+
 
   const { toast } = useToast()
 
@@ -45,10 +48,14 @@ const Feed = ({ p, user }: Props) => {
         let newPrompts;
         if (search.profile) {
           newPrompts = await getNewProfilePrompts(search.filter);
+        }
+        else if (pathName.includes('users')) {
+          newPrompts = await getNewUserPrompts(search.filter, user?.id)
         } else {
           newPrompts = await getNewPrompts(search.filter);
         }
-        setPrompts(newPrompts);
+
+        newPrompts.length !== prompts.length && setPrompts(newPrompts);
         setSearch({ ...search, finding: false, filter: '' });
       }
     };
@@ -64,7 +71,6 @@ const Feed = ({ p, user }: Props) => {
       })
 
       const updatedPrompts = prompts.filter((p: any) => id !== p?.id)
-      console.log("🚀 ~ file: Feed.tsx:68 ~ deletePrompt ~ updatedPrompts:", updatedPrompts)
       setPrompts(updatedPrompts)
 
       toast({
@@ -109,7 +115,7 @@ const Feed = ({ p, user }: Props) => {
       <SearchForm
         setSearch={setSearch} search={search}
       />
-      {prompts.length === 0 && <p>No results Found :(</p>}
+      {prompts?.length === 0 && <p className="text-xl font-[500]">No Prompts Found :(</p>}
 
       <For each={prompts}>
         {(prompt) => {

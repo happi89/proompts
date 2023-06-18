@@ -1,35 +1,33 @@
-import { NextApiRequest } from 'next';
 import { connectToDB } from "@/utils/db";
 import Prompt from "@/models/prompt";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import User from "@/models/user";
 
-export async function GET(req: Request) {
-  const filter = req.url?.split('=')[1]
+export async function GET(req: NextRequest) {
+  const filter = req.nextUrl.searchParams.get('filter')!
 
   try {
     await connectToDB()
 
-    const tagPrompts = await Prompt.find({ tag: { $regex: filter, $options: 'i' } }).populate('creator');
+    const regex = new RegExp(filter, 'i');
+    const prompts = await Prompt.find({
+      $or: [
+        { tag: regex },
+        { creator: { $in: await getUserIdsByUsername(filter) } },
+        { body: regex }
+      ]
+    }).sort({ createdAt: 'desc' }).populate('creator');
 
-    const userPrompts = await Prompt.find({})
-      .populate({
-        path: 'creator',
-        match: { username: { $regex: filter, $options: 'i' } },
-      })
-      .exec();
 
-    const userPromptsSorted = userPrompts.filter((prompt) => prompt.creator !== null);
 
-    const prompts = [...tagPrompts, ...userPromptsSorted];
-
-    // Remove duplicates by filtering based on prompt _id
-    const uniquePrompts = prompts.filter((prompt, index, self) =>
-      index === self.findIndex((p) => p._id === prompt._id)
-    );
-
-    return NextResponse.json(uniquePrompts, { status: 200 })
+    return NextResponse.json(prompts, { status: 200 })
   } catch (error) {
     console.log(error)
     return NextResponse.json(error, { status: 404 })
   }
+}
+
+async function getUserIdsByUsername(username: string) {
+  const users = await User.find({ username: { $regex: username, $options: "i" } });
+  return users.map(user => user.id);
 }

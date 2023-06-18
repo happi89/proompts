@@ -1,9 +1,8 @@
 'use client'
 
 import { Dispatch, SetStateAction, useState } from "react";
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { useToast } from "./ui/use-toast";
+import { Button } from "../ui/button"
+import { Input } from "../ui/input"
 
 interface Props {
   setSearch: Dispatch<SetStateAction<{

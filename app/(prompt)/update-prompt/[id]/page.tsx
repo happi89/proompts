@@ -1,4 +1,4 @@
-import { PromptForm } from '@/components/PromptForm'
+import PromptForm from '@/components/PromptForm'
 import Prompt from '@/models/prompt';
 import { getCurrentUser } from '@/utils/session'
 import React from 'react'

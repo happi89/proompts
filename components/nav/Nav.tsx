@@ -1,7 +1,9 @@
-import MobileNav from './MobileNav';
-import DesktopNav from './DesktopNav';
+import dynamic from 'next/dynamic';
 import Link from 'next/link'
 import { getCurrentUser } from '@/utils/session';
+
+const MobileNav = dynamic(() => import('./MobileNav'))
+const DesktopNav = dynamic(() => import('./DesktopNav'))
 
 export default async function Nav() {
   const user = await getCurrentUser()
@@ -9,7 +11,7 @@ export default async function Nav() {
   return (
     <header className="container flex items-center justify-between mt-2 h-14">
       <div className="mr-4">
-        <Link href='/'>
+        <Link href=''>
           <h1 className='text-2xl font-medium'>
             Proompts
           </h1>

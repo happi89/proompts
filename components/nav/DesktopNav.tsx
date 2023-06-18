@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { signOut, signIn } from "next-auth/react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Avatar, AvatarImage, AvatarFallback
-} from './ui/avatar'
+} from '../ui/avatar'
 
 export default function DesktopNav({ user }: any) {
   return (
@@ -13,9 +13,9 @@ export default function DesktopNav({ user }: any) {
       {
         user ? (
           <nav className='hidden space-x-6 sm:flex'>
-            <Link href='/create-prompt'><Button>Create Prompt</Button></Link>
+            <Link href='create-prompt'><Button>Create Prompt</Button></Link>
             <Button onClick={signOut} variant="outline">Sign Out</Button>
-            <Link href='/profile'>
+            <Link href='profile'>
               <Avatar>
                 <AvatarImage src={user?.image ? user?.image : `https://ui-avatars.com/api/?name=${ user?.name }`} alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>

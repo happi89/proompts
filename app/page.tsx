@@ -1,4 +1,4 @@
-import Feed from '@/components/Feed';
+import Feed from '@/components/home/Feed';
 import { getCurrentUser } from '@/utils/session';
 import { Metadata } from 'next';
 

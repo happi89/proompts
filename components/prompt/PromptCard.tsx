@@ -1,14 +1,20 @@
 'use client'
 
+import { Dispatch, SetStateAction } from "react";
+import dynamic from "next/dynamic";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card"
-import { Dispatch, SetStateAction } from "react";
-import PromptDialog from "./PromptDialog";
-import PromptCarderHeader from "./PromptCarderHeader";
+
+const PromptDialog = dynamic(() => import('./PromptDialog'))
+const PromptCarderHeader = dynamic(() => import('./PromptCarderHeader'))
+
+// import PromptDialog from "./PromptDialog";
+// import PromptCarderHeader from "./PromptCarderHeader";
+
 
 export interface Prompt {
   id: string
@@ -20,6 +26,7 @@ export interface Prompt {
     image: string
     id: string
   }
+  saved: string[]
 }
 
 interface Props {
@@ -52,17 +59,17 @@ function PromptCard({ prompt, search, setSearch, userId, deletePrompt }: Props) 
   return (
     <Card className="w-full md:w-[480px] h-full flex flex-col">
       <CardHeader className="flex flex-row items-center w-full gap-4">
-        <PromptCarderHeader prompt={prompt} />
+        <PromptCarderHeader userId={userId} prompt={prompt} />
       </CardHeader>
       <CardContent className='h-full'>
         <PromptDialog
           deletePrompt={deletePrompt}
-          show={userId === prompt.creator.id}
+          userId={userId}
           prompt={prompt}
           searchTag={searchTag} />
       </CardContent>
       <CardFooter className="">
-        <p onClick={searchTag} className='text-blue-500 hover:cursor-pointer hover:underline'>{prompt?.tag}</p>
+        <p onClick={searchTag} className='text-blue-500 hover:cursor-pointer hover:underline'>{prompt?.tag[0] !== '#' ? `#${ prompt?.tag }` : prompt?.tag}</p>
       </CardFooter>
     </Card>
   )

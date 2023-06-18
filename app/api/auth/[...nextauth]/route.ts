@@ -30,8 +30,9 @@ export const authOptions: NextAuthOptions = {
       }
 
       session!.user!.id = sessionUser.id.toString()
+      session!.user!.username = sessionUser.username.toString()
 
-      return session
+      return Promise.resolve(session)
     },
     async signIn({ profile }: any) {
       try {
@@ -45,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         if (!userExists) {
           const res = await User.create({
             email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(),
+            username: profile.name.replace(/\s/g, '').length > 20 ? profile.name.replace(/\s/g, '').replace(/-/g, "").substring(0, 19).toLowerCase() : profile.name.replace(/\s/g, '').replace(/-/g, "").toLowerCase(),
             image: profile?.image || profile.picture
           })
         }

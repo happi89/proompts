@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "./ui/use-toast"
 import React, { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { Prompt } from "./PromptCard"
+import { Prompt } from "./prompt/PromptCard"
 
 const formSchema = z.object({
   body: z.string().min(6, {
@@ -36,7 +36,7 @@ const formSchema = z.object({
   })
 })
 
-export const PromptForm = ({ user, type, prompt }: { user: any, type: string, prompt?: Prompt }) => {
+const PromptForm = ({ user, type, prompt }: { user: any, type: string, prompt?: Prompt }) => {
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
@@ -62,16 +62,21 @@ export const PromptForm = ({ user, type, prompt }: { user: any, type: string, pr
           'Content-Type': 'application/json'
         }
       })
-      console.log("🚀 ~ file: PromptForm.tsx:64 ~ createPrompt ~ res:", res)
 
 
-      toast({
-        title: "Prompt created Successfully!",
-      })
-
+      if (res?.ok) {
+        toast({
+          title: "Prompt created Successfully!",
+        })
+        router.prefetch('/')
+        router.push('')
+      } else {
+        toast({
+          title: `ERROR: ${ res.statusText }`,
+          variant: 'destructive'
+        })
+      }
       setSubmitting(false)
-      router.push('/')
-
     } catch (error) {
       console.log(error)
     }
@@ -90,16 +95,14 @@ export const PromptForm = ({ user, type, prompt }: { user: any, type: string, pr
           'Content-Type': 'application/json'
         }
       })
-      console.log("🚀 ~ file: PromptForm.tsx:64 ~ updatePrompt ~ res:", res)
-
 
       toast({
         title: "Prompt Updated Successfully!",
       })
 
       setSubmitting(false)
-      router.push('/')
-
+      router.prefetch('/')
+      router.push('')
     } catch (error) {
       console.log(error)
     }
@@ -147,14 +150,10 @@ export const PromptForm = ({ user, type, prompt }: { user: any, type: string, pr
               </FormItem>
             )}
           />
-          <div className="flex items-center justify-between w-full max-w-lg">
-            <Link href='/'>
-              <Button
-                variant='destructive'
-              >
-                Cancel
-              </Button>
-            </Link>
+          <div className="flex items-center justify-end w-full max-w-lg gap-4">
+            <Button asChild variant='destructive'>
+              <Link href="">Cancel</Link>
+            </Button>
             <Button
               disabled={submitting}
               type="submit">
@@ -166,3 +165,5 @@ export const PromptForm = ({ user, type, prompt }: { user: any, type: string, pr
     </>
   )
 }
+
+export default PromptForm

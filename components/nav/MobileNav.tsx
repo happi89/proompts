@@ -8,12 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem
-} from "./ui/dropdown-menu"
+} from "../ui/dropdown-menu"
 import {
   Avatar, AvatarImage, AvatarFallback
-} from './ui/avatar'
+} from '../ui/avatar'
 import { signOut, signIn } from "next-auth/react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Link from 'next/link'
 
 export default function MobileNav({ user }: any) {
@@ -33,10 +33,10 @@ export default function MobileNav({ user }: any) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href='/create-prompt'>Create Prompt</Link>
+            <Link href='create-prompt'>Create Prompt</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href='/profile'>Profile</Link>
+            <Link href='profile'>Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <button onClick={() => signOut()}>Sign Out</button>
