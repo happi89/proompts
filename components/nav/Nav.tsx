@@ -9,7 +9,7 @@ export default async function Nav() {
   const user = await getCurrentUser()
 
   return (
-    <header className="container flex items-center justify-between mt-2 h-14">
+    <header className="container flex items-center justify-between h-14">
       <div className="mr-4">
         <Link href=''>
           <h1 className='text-2xl font-medium'>

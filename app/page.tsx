@@ -20,8 +20,7 @@ const Home = async () => {
         Discover & Share
       </h1>
       <br className="max-md:hidden" />
-      <span className='text-6xl font-bold text-center blue_gradient'>Ai Powered Prompts</span>
-      <p className="text-center desc">Proompts is an open source AI Proompting tool for the AI world to discorver, create & share creative PROOMPTS</p>
+      <span className='text-6xl font-bold text-center blue_gradient'>AI Prompts</span>
       <Feed p={prompts} user={user} />
     </section>
   )
