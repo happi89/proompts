@@ -18,7 +18,7 @@ export const RootLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         <main className='app'>
-          {/* @ts-expect-error */}
+          {/* @ts-ignore */}
           <Nav />
           {children}
           <Toaster />

@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth"
-
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
-import { Session } from "@/app/(prompt)/create-prompt/page"
+import { Session } from "next-auth"
 
 export async function getCurrentUser() {
   const session: Session | null = await getServerSession(authOptions)
