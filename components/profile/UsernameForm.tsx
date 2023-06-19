@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useRouter } from 'next/navigation'
+import { Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
   username: z.string().min(4, {
@@ -86,7 +87,7 @@ const UsernameForm = ({ user }: any) => {
                 <Input disabled={submitting} placeholder="Write your Username Proompt here!" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display Username. You can only change it every 3 days!
+                This is your public display Username.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -99,6 +100,7 @@ const UsernameForm = ({ user }: any) => {
           <Button
             disabled={submitting || form.getValues('username') === user?.username}
             type="submit">
+            {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Update Username
           </Button>
         </div>

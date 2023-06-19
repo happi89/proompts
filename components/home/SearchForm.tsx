@@ -1,5 +1,6 @@
 'use client'
 
+import { Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -34,7 +35,10 @@ export default function SearchForm({ setSearch, search: s }: Props) {
         onKeyDown={({ key }) => key === 'Enter' && search()}
         disabled={s.finding}
       />
-      <Button disabled={s.finding} className="shadow-xl" onClick={search}>Search</Button>
+      <Button disabled={s.finding} className="shadow-xl" onClick={search}>
+        {s?.finding && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+        Search
+      </Button>
     </div>
   </>
 }

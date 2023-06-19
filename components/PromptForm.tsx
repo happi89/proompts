@@ -22,6 +22,7 @@ import { useToast } from "./ui/use-toast"
 import React, { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Prompt } from "./prompt/PromptCard"
+import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   body: z.string().min(6, {
@@ -157,6 +158,7 @@ const PromptForm = ({ user, type, prompt }: { user: any, type: string, prompt?: 
             <Button
               disabled={submitting}
               type="submit">
+              {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {type} Prompt
             </Button>
           </div>
