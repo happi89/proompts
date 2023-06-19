@@ -63,11 +63,12 @@ export async function DELETE(req: Request, { params }: any) {
 
     const updatedUser = await User.findById(promptToDelete.creator.id)
     updatedUser.prompts = updatedUser.prompts.filter((promptId: string) => promptId.toString() !== params.id);
-    await promptToDelete.remove()
+    await promptToDelete.deleteOne()
     await updatedUser.save()
 
     return NextResponse.json(promptToDelete, { status: 201 })
   } catch (error) {
+    console.log("🚀 ~ file: route.ts:71 ~ DELETE ~ error:", error)
     return NextResponse.json(error, { status: 500 })
   }
 }

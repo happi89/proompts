@@ -58,7 +58,7 @@ function PromptCard({ prompt, search, setSearch, userId, deletePrompt }: Props) 
 
   return (
     <Card className="w-full md:w-[480px] h-full flex flex-col">
-      <CardHeader className="flex flex-row items-center w-full gap-4">
+      <CardHeader className="flex flex-row items-center w-full gap-6">
         <PromptCarderHeader userId={userId} prompt={prompt} />
       </CardHeader>
       <CardContent className='h-full'>
