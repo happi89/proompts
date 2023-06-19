@@ -9,7 +9,7 @@ export default async function Profile() {
     throw redirect('/api/auth/signin')
   }
 
-  const prompts = await fetch(`${ process.env.URL }/api/users/${ user?.id }`, {
+  const prompts = await fetch(`${ process.env.SITE_URL }/api/users/${ user?.id }`, {
     cache: 'no-store',
   }).then(res => res.json())
 

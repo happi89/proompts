@@ -7,7 +7,7 @@ interface Props {
 }
 
 const UserPage = async ({ params }: Props) => {
-  const data = await fetch(`${ process.env.URL }/api/profile/${ params?.id }`).then(res => res.json())
+  const data = await fetch(`${ process.env.SITE_URL }/api/profile/${ params?.id }`).then(res => res.json())
   const { prompts, user } = data
 
   return (
